@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
-
 @Repository
 public class ContentCollectionRepository {
     private final List<Content> content = new ArrayList<>();
@@ -28,6 +26,19 @@ public class ContentCollectionRepository {
         return content.stream().filter(c -> c.id().equals(id)).findFirst();
     }
 
-    
+    @PostConstruct
+    private void init() {
+        Content c = new Content(
+                 1,
+                 "My First Blog Post",
+                "my first blog post",
+                Status.IDEA,
+                Type.ARTICLE,
+                LocalDateTime.now(),
+                null,
+                "");
+        content.add(c);
+    }
+
 
 }
