@@ -3,11 +3,13 @@ package dev.cavsteek.contentcalendar.controller;
 import dev.cavsteek.contentcalendar.model.Content;
 import dev.cavsteek.contentcalendar.repository.ContentCollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/content")
@@ -15,7 +17,7 @@ public class ContentController {
 
     private final ContentCollectionRepository repository;
 
-    public ContentController(ContentCollectionRepository repository) {
+     public ContentController(ContentCollectionRepository repository) {
         this.repository = repository;
     }
 
@@ -24,5 +26,14 @@ public class ContentController {
         return repository.findAll();
     }
 
+    @GetMapping("/{id}")
+    public Content findById(@PathVariable Integer id){
+         return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Not Found"));
+    }
+
+    @PostMapping("/new")
+    public void create(@RequestBody Content content){
+         repository.save(content);
+    }
 
 }
