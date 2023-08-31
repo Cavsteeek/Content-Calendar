@@ -26,11 +26,13 @@ public class ContentController {
         return repository.findAll();
     }
 
+    @ResponseStatus(HttpStatus.FOUND)
     @GetMapping("/{id}")
     public Content findById(@PathVariable Integer id){
          return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Not Found"));
     }
 
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/new")
     public void create(@RequestBody Content content){
          repository.save(content);
